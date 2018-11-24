@@ -9,7 +9,6 @@ void main() {
 
     // post-conditions
     expect(0.0, payment.amount);
-    expect(DateTime.now().day, payment.day);
     expect(null, payment.id);
     expect("Capital One", payment.name);
   });

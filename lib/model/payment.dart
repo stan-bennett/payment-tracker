@@ -2,7 +2,6 @@ class Payment {
   Payment(this.name) {
     _amount = 0.0;
     _date = DateTime.now().millisecondsSinceEpoch;
-    day = DateTime.now().day;
   }
 
   // fields
@@ -12,7 +11,6 @@ class Payment {
   int _date;
   int get date => _date;
 
-  int day;
   int id;
   String name;
 
@@ -21,7 +19,6 @@ class Payment {
     this.id = map['id'];
     this._amount = map['amount'];
     this._date = map['date'];
-    this.day = map['day'];
     this.name = map['name'];
   }
 
@@ -29,7 +26,6 @@ class Payment {
     this.id = obj['id'];
     this._amount = obj['amount'];
     this._date = obj['date'];
-    this.day = obj['day'];
     this.name = obj['name'];
   }
 
@@ -40,7 +36,6 @@ class Payment {
     }
     map['amount'] = amount;
     map['date'] = date;
-    map['day'] = day;
     map['name'] = name;
     return map;
   }

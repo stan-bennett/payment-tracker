@@ -41,7 +41,7 @@ class PaymentService {
 
   void _onCreate(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $tablePayment($columnId INTEGER PRIMARY KEY, $columnName TEXT, $columnAmount REAL, $columnDate INTEGER, $columnDay INTEGER)');
+        'CREATE TABLE $tablePayment($columnId INTEGER PRIMARY KEY, $columnName TEXT, $columnAmount REAL, $columnDate INTEGER)');
   }
 
   Future<int> savePayment(Payment payment) async {
