@@ -4,10 +4,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:payment_tracker/model/payment.dart';
 
-class DatabaseHelper {
-  static final DatabaseHelper _instance = new DatabaseHelper.internal();
+class PaymentService {
+  static final PaymentService _instance = new PaymentService.internal();
 
-  factory DatabaseHelper() => _instance;
+  factory PaymentService() => _instance;
 
   final String tablePayment = 'paymentTable';
   final String columnId = 'id';
@@ -18,7 +18,7 @@ class DatabaseHelper {
 
   static Database _db;
 
-  DatabaseHelper.internal();
+  PaymentService.internal();
 
   Future<Database> get db async {
     if (_db != null) {
@@ -46,19 +46,13 @@ class DatabaseHelper {
 
   Future<int> savePayment(Payment payment) async {
     var dbClient = await db;
-    var result = await dbClient.insert(tablePayment, payment.toMap());
-//    var result = await dbClient.rawInsert(
-//        'INSERT INTO $tablePayment ($columnTitle, $columnDescription) VALUES (\'${payment.name}\', \'${payment.description}\')');
-
-    return result;
+    return await dbClient.insert(tablePayment, payment.toMap());
   }
 
   Future<List> getAllPayments() async {
     var dbClient = await db;
     var result = await dbClient.query(tablePayment,
         columns: [columnId, columnName, columnAmount, columnDate, columnDay]);
-//    var result = await dbClient.rawQuery('SELECT * FROM $tablePayment');
-
     return result.toList();
   }
 
@@ -74,28 +68,25 @@ class DatabaseHelper {
         columns: [columnId, columnName, columnAmount, columnDate, columnDay],
         where: '$columnId = ?',
         whereArgs: [id]);
-//    var result = await dbClient.rawQuery('SELECT * FROM $tablePayment WHERE $columnId = $id');
 
-    if (result.length > 0) {
-      return new Payment.fromMap(result.first);
+    // guard clause - payment not found
+    if (result.length == 0) {
+      return null;
     }
 
-    return null;
+    return new Payment.fromMap(result.first);
   }
 
   Future<int> deletePayment(int id) async {
     var dbClient = await db;
     return await dbClient
         .delete(tablePayment, where: '$columnId = ?', whereArgs: [id]);
-//    return await dbClient.rawDelete('DELETE FROM $tablePayment WHERE $columnId = $id');
   }
 
   Future<int> updatePayment(Payment payment) async {
     var dbClient = await db;
     return await dbClient.update(tablePayment, payment.toMap(),
         where: "$columnId = ?", whereArgs: [payment.id]);
-//    return await dbClient.rawUpdate(
-//        'UPDATE $tablePayment SET $columnTitle = \'${payment.name}\', $columnDescription = \'${payment.description}\' WHERE $columnId = ${payment.id}');
   }
 
   Future close() async {

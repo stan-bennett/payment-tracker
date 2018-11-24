@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment_tracker/model/payment.dart';
-import 'package:payment_tracker/util/database_helper.dart';
+import 'package:payment_tracker/service/payment_service.dart';
 
 class PaymentScreen extends StatefulWidget {
   final Payment payment;
@@ -11,7 +11,7 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  DatabaseHelper db = new DatabaseHelper();
+  PaymentService paymentService = new PaymentService();
 
   TextEditingController _nameController;
   TextEditingController _amountController;
@@ -48,7 +48,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               child: (widget.payment.id != null) ? Text('Update') : Text('Add'),
               onPressed: () {
                 if (widget.payment.id != null) {
-                  db.updatePayment(Payment.fromMap({
+                  paymentService.updatePayment(Payment.fromMap({
                     'id': widget.payment.id,
                     'title': _nameController.text,
                     'description': _amountController.text
@@ -58,7 +58,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 }else {
                   Payment payment = Payment(_nameController.text);
                   payment.setAmount(_amountController.text);
-                  db.savePayment(payment).then((_) {
+                  paymentService.savePayment(payment).then((_) {
                     Navigator.pop(context, 'save');
                   });
                 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment_tracker/model/payment.dart';
-import 'package:payment_tracker/util/database_helper.dart';
+import 'package:payment_tracker/service/payment_service.dart';
 import 'package:payment_tracker/ui/payment_screen.dart';
 
 class ListViewPayment extends StatefulWidget {
@@ -10,13 +10,13 @@ class ListViewPayment extends StatefulWidget {
 
 class _ListViewPaymentState extends State<ListViewPayment> {
   List<Payment> items = new List();
-  DatabaseHelper db = new DatabaseHelper();
+  PaymentService paymentService = new PaymentService();
 
   @override
   void initState() {
     super.initState();
 
-    db.getAllPayments().then((payments) {
+    paymentService.getAllPayments().then((payments) {
       setState(() {
         payments.forEach((payment) {
           items.add(Payment.fromMap(payment));
@@ -28,10 +28,10 @@ class _ListViewPaymentState extends State<ListViewPayment> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'JSA ListView Demo',
+      title: 'Payment Tracker',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('ListView Demo'),
+          title: Text('Payment Tracker'),
           centerTitle: true,
           backgroundColor: Colors.blue,
         ),
@@ -92,7 +92,7 @@ class _ListViewPaymentState extends State<ListViewPayment> {
   }
 
   void _deletePayment(BuildContext context, Payment payment, int position) async {
-    db.deletePayment(payment.id).then((payments) {
+    paymentService.deletePayment(payment.id).then((payments) {
       setState(() {
         items.removeAt(position);
       });
@@ -106,7 +106,7 @@ class _ListViewPaymentState extends State<ListViewPayment> {
     );
 
     if (result == 'update') {
-      db.getAllPayments().then((payments) {
+      paymentService.getAllPayments().then((payments) {
         setState(() {
           items.clear();
           payments.forEach((payment) {
@@ -124,7 +124,7 @@ class _ListViewPaymentState extends State<ListViewPayment> {
     );
 
     if (result == 'save') {
-      db.getAllPayments().then((payments) {
+      paymentService.getAllPayments().then((payments) {
         setState(() {
           items.clear();
           payments.forEach((payment) {
