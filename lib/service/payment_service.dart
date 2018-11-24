@@ -13,7 +13,6 @@ class PaymentService {
   final String columnId = 'id';
   final String columnAmount = 'amount';
   final String columnDate = 'date';
-  final String columnDay = 'day';
   final String columnName = 'name';
 
   static Database _db;
@@ -52,7 +51,7 @@ class PaymentService {
   Future<List> getAllPayments() async {
     var dbClient = await db;
     var result = await dbClient.query(tablePayment,
-        columns: [columnId, columnName, columnAmount, columnDate, columnDay]);
+        columns: [columnId, columnName, columnAmount, columnDate]);
     return result.toList();
   }
 
@@ -65,7 +64,7 @@ class PaymentService {
   Future<Payment> getPayment(int id) async {
     var dbClient = await db;
     List<Map> result = await dbClient.query(tablePayment,
-        columns: [columnId, columnName, columnAmount, columnDate, columnDay],
+        columns: [columnId, columnName, columnAmount, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
 
