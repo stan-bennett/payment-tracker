@@ -5,7 +5,7 @@ void main() {
   // blue sky tests
   test("testBlueSky_defaultValues", () {
     // exercise
-    Payment payment = new Payment("Capital One");
+    Payment payment = new Payment("capital one");
 
     // post-conditions
     expect(0.0, payment.amount);

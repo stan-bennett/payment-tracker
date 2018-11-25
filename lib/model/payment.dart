@@ -1,5 +1,8 @@
+import 'package:recase/recase.dart';
+
 class Payment {
-  Payment(this.name) {
+  Payment(this._name) {
+    name = this._name;
     _amount = 0.0;
     _date = DateTime.now().millisecondsSinceEpoch;
   }
@@ -12,7 +15,14 @@ class Payment {
   int get date => _date;
 
   int id;
-  String name;
+  String _name;
+
+  String get name => _name;
+
+  set name(String name) {
+    ReCase rc = new ReCase(name);
+    _name = rc.titleCase;
+  }
 
   // map
   Payment.fromMap(Map<String, dynamic> map) {
